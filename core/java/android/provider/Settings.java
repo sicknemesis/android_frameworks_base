@@ -2518,6 +2518,11 @@ public final class Settings {
         public static final String PIE_SIZE = "pie_size";
 
         /**
+         * @hide
+         */
+        public static final String DUAL_PANE_PREFS = "dual_pane_prefs";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
