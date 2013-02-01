@@ -92,8 +92,8 @@ class QuickSettings {
     private static final String TAG = "QuickSettings";
     public static final boolean SHOW_IME_TILE = false;
     
-    public String strLocationOff = "LOCATION OFF";
-    public String strLocationOn = "LOCATION ON";
+    public String strLocationOff = "GPS OFF";
+    public String strLocationOn = "GPS ON";
 
     private Context mContext;
     private PanelBar mBar;
