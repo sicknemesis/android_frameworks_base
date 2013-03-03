@@ -311,8 +311,7 @@ class QuickSettings {
                         (UserManager) mContext.getSystemService(Context.USER_SERVICE);
                 if (um.getUsers(true).size() > 1) {
                     try {
-                        WindowManagerGlobal.getWindowManagerService().lockNow(
-                                LockPatternUtils.USER_SWITCH_LOCK_OPTIONS);
+                        WindowManagerGlobal.getWindowManagerService().lockNow(null);
                     } catch (RemoteException e) {
                         Log.e(TAG, "Couldn't show user switcher", e);
                     }
@@ -447,7 +446,7 @@ class QuickSettings {
         });
         parent.addView(wifiTile);
 
-        if (mModel.deviceSupportsTelephony()) {
+        if (mModel.deviceHasMobileData()) {
             // RSSI
             QuickSettingsTileView rssiTile = (QuickSettingsTileView)
                     inflater.inflate(R.layout.quick_settings_tile, parent, false);
