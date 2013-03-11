@@ -2526,6 +2526,7 @@ public class PhoneStatusBar extends BaseStatusBar {
         animateCollapsePanels();
         updateNotificationIcons();
         resetUserSetupObserver();
+        updateSearchPanel();
     }
 
     private void resetUserSetupObserver() {
