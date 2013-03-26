@@ -2339,7 +2339,13 @@ public final class Settings {
          * @hide
          */
         public static final String EXPANDED_DESKTOP_STATE = "expanded_desktop_state";
-        
+
+        /**
+         * Expanded desktop style (with status bar or without status bar)
+         * @hide
+         */
+        public static final String EXPANDED_DESKTOP_STYLE = "expanded_desktop_style";
+
         /**
          * Display style of AM/PM next to clock in status bar
          * 0: Normal display (Eclair stock)
