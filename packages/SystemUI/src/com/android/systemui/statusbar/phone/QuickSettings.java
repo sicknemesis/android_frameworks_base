@@ -733,7 +733,6 @@ class QuickSettings {
         torchTile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getService().animateCollapsePanels();
                 Intent intent=new Intent("net.cactii.flash2.TOGGLE_FLASHLIGHT");
                 mContext.sendBroadcast(intent);
                 }
