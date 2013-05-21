@@ -2518,13 +2518,6 @@ public final class Settings {
         public static final String PIE_SIZE = "pie_size";
 
         /**
-         * Wheter to enable dual pane preference
-         * 
-         * @hide
-         */
-        public static final String DUAL_PANE_PREFS = "dual_pane_prefs";
-
-        /**
          * Wheter to wake up when plugged or unplugged
          *
          * @hide
