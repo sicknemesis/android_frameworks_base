@@ -620,6 +620,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     Settings.System.EXPANDED_DESKTOP_STATE), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.EXPANDED_DESKTOP_STYLE), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NAV_BUTTONS_HEIGHT), false, this,
                     UserHandle.USER_ALL);
             updateSettings();
@@ -2161,8 +2164,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             }
             return -1;
         } else if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (Settings.Secure.getInt(mContext.getContentResolver(),
-                    Settings.Secure.KILL_APP_LONGPRESS_BACK, 0) == 1) {
+            if (Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                    Settings.Secure.KILL_APP_LONGPRESS_BACK, 0, UserHandle.USER_CURRENT) == 1) {
                 if (down && repeatCount == 0) {
                     mHandler.postDelayed(mBackLongPress, mBackKillTimeout);
                 }

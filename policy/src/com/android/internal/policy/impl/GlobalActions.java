@@ -26,6 +26,7 @@ import android.app.ActivityManagerNative;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -264,6 +265,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         };
         onAirplaneModeChanged();
 
+        final ContentResolver cr = mContext.getContentResolver();
         mItems = new ArrayList<Action>();
 
         // first: power off
@@ -324,9 +326,14 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             });
 
         // next: expanded desktop toggle
-        // only shown if enabled, disabled by default
-        if(Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.POWER_MENU_EXPANDED_DESKTOP_ENABLED, 0) == 1){
+        // only shown if enabled and expanded desktop is enabled, disabled by default
+        boolean showExpandedDesktop =
+                Settings.System.getIntForUser(cr,
+                        Settings.System.EXPANDED_DESKTOP_STYLE, 0, UserHandle.USER_CURRENT) != 0
+                && Settings.System.getIntForUser(cr,
+                        Settings.System.POWER_MENU_EXPANDED_DESKTOP_ENABLED, 0, UserHandle.USER_CURRENT) == 1;
+
+        if (showExpandedDesktop) {
             mItems.add(mExpandDesktopModeOn);
         }
 
@@ -1055,10 +1062,10 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     }
 
     private void onExpandDesktopModeChanged() {
-        boolean expandDesktopModeOn = Settings.System.getInt(
+        boolean expandDesktopModeOn = Settings.System.getIntForUser(
                 mContext.getContentResolver(),
                 Settings.System.EXPANDED_DESKTOP_STATE,
-                0) == 1;
+                0, UserHandle.USER_CURRENT) == 1;
         mExpandDesktopModeOn.updateState(expandDesktopModeOn ? ToggleAction.State.On : ToggleAction.State.Off);
     }
 
@@ -1083,10 +1090,10 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
      * Change the expand desktop mode system setting
      */
     private void changeExpandDesktopModeSystemSetting(boolean on) {
-        Settings.System.putInt(
+        Settings.System.putIntForUser(
                 mContext.getContentResolver(),
                 Settings.System.EXPANDED_DESKTOP_STATE,
-                on ? 1 : 0);
+                on ? 1 : 0, UserHandle.USER_CURRENT);
     }
 
     private static final class GlobalActionsDialog extends Dialog implements DialogInterface {
