@@ -6937,10 +6937,6 @@ public class WindowManagerService extends IWindowManager.Stub
 
     private ApplicationDisplayMetrics updateApplicationDisplayMetricsLocked(
             DisplayContent displayContent) {
-        if (!mDisplayReady) {
-            return null;
-        }
-
         final ApplicationDisplayMetrics m = calculateDisplayMetrics(displayContent);
         final DisplayInfo displayInfo = displayContent.getDisplayInfo();
 
@@ -6970,17 +6966,16 @@ public class WindowManagerService extends IWindowManager.Stub
     }
 
     boolean computeScreenConfigurationLocked(Configuration config) {
+        if (!mDisplayReady) {
+            return false;
+        }
+
         // TODO(multidisplay): For now, apply Configuration to main screen only.
         final DisplayContent displayContent = getDefaultDisplayContentLocked();
 
         // Update application display metrics.
         final ApplicationDisplayMetrics appDm = updateApplicationDisplayMetricsLocked(
                 displayContent);
-
-        if (appDm == null) {
-            return false;
-        }
-
         final boolean rotated = appDm.rotated;
         final int dw = appDm.dw;
         final int dh = appDm.dh;
