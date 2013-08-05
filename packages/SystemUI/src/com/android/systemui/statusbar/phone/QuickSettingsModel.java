@@ -43,6 +43,7 @@ import com.android.internal.view.RotationPolicy;
 import com.android.systemui.R;
 import com.android.systemui.settings.CurrentUserTracker;
 import com.android.systemui.settings.BrightnessController.BrightnessStateChangeCallback;
+import com.android.systemui.statusbar.phone.QuickSettingsModel.RefreshCallback;
 import com.android.systemui.statusbar.policy.BatteryController.BatteryStateChangeCallback;
 import com.android.systemui.statusbar.policy.LocationController.LocationGpsStateChangeCallback;
 import com.android.systemui.statusbar.policy.NetworkController.NetworkSignalChangedCallback;
@@ -259,6 +260,10 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     private RefreshCallback mSettingsCallback;
     private State mSettingsState = new State();
 
+    private QuickSettingsTileView mPowerMenuTile;
+    private RefreshCallback mPowerMenuCallback;
+    private State mPowerMenuState = new State();
+
     public QuickSettingsModel(Context context) {
         mContext = context;
         mHandler = new Handler();
@@ -294,6 +299,7 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         refreshBluetoothTile();
         refreshBrightnessTile();
         refreshRotationLockTile();
+        refreshPowerMenuTile();
     }
 
     // Settings
@@ -306,6 +312,18 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         Resources r = mContext.getResources();
         mSettingsState.label = r.getString(R.string.quick_settings_settings_label);
         mSettingsCallback.refreshView(mSettingsTile, mSettingsState);
+    }
+
+    // Power Menu
+    void addPowerMenuTile(QuickSettingsTileView view, RefreshCallback cb) {
+        mPowerMenuTile = view;
+        mPowerMenuCallback = cb;
+        refreshPowerMenuTile();
+    }
+    void refreshPowerMenuTile() {
+        Resources r = mContext.getResources();
+        mPowerMenuState.label = r.getString(R.string.quick_settings_power_menu_label);
+        mPowerMenuCallback.refreshView(mPowerMenuTile, mPowerMenuState);
     }
 
     // User
