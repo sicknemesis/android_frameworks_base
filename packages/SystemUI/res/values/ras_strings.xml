@@ -22,4 +22,7 @@
     <string name="quick_settings_power_menu_label">Power Menu</string>
     <!-- Screen off tile -->
     <string name="quick_settings_screen_off_label">Screen Off</string>
+    <!-- Location tile -->
+    <string name="quick_settings_location_on">Gps On</string>
+    <string name="quick_settings_location_off">Gps Off</string>
 </resources>

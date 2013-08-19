@@ -51,6 +51,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.WifiDisplayStatus;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
@@ -99,6 +100,7 @@ class QuickSettings {
     private BluetoothState mBluetoothState;
     private BluetoothAdapter mBluetoothAdapter;
     private WifiManager mWifiManager;
+    private LocationManager mLocationManager;
 
     private BluetoothController mBluetoothController;
 
@@ -134,6 +136,7 @@ class QuickSettings {
         mBluetoothState = new QuickSettingsModel.BluetoothState();
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
 
         mHandler = new Handler();
 
@@ -478,6 +481,58 @@ class QuickSettings {
             parent.addView(rssiTile);
         }
 
+        // Location
+        final QuickSettingsBasicTile locationTile = new QuickSettingsBasicTile(mContext);
+        boolean LocationEnabled = Settings.Secure.isLocationProviderEnabled(
+                mContext.getContentResolver(), LocationManager.GPS_PROVIDER);
+        locationTile.setTextResource(LocationEnabled ?
+                R.string.quick_settings_location_off
+                : R.string.quick_settings_location_on);
+        locationTile.setImageResource(LocationEnabled ?
+                R.drawable.ic_qs_location_off
+                : R.drawable.ic_qs_location);
+        locationTile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean LocationEnabled = Settings.Secure.isLocationProviderEnabled(
+                        mContext.getContentResolver(), LocationManager.GPS_PROVIDER);
+                Settings.Secure.setLocationProviderEnabled(mContext.getContentResolver(),
+                        LocationManager.GPS_PROVIDER,
+                        LocationEnabled ?
+                                false
+                                : true);
+                locationTile.setTextResource(LocationEnabled ?
+                        R.string.quick_settings_location_off
+                        : R.string.quick_settings_location_on);
+                locationTile.setImageResource(LocationEnabled ?
+                        R.drawable.ic_qs_location_off
+                        : R.drawable.ic_qs_location);
+            }
+        });
+        if (LONG_PRESS_TOGGLES) {
+            locationTile.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    startSettingsActivity(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    return true;
+                }
+            });
+        }
+        mModel.addLocationTile(locationTile, new QuickSettingsModel.RefreshCallback() {
+            @Override
+            public void refreshView(QuickSettingsTileView view, State state) {
+                boolean LocationEnabled = Settings.Secure.isLocationProviderEnabled(
+                        mContext.getContentResolver(), LocationManager.GPS_PROVIDER);
+                locationTile.setTextResource(LocationEnabled ?
+                        R.string.quick_settings_location_on
+                        : R.string.quick_settings_location_off);
+                locationTile.setImageResource(LocationEnabled ?
+                        R.drawable.ic_qs_location
+                        : R.drawable.ic_qs_location_off);
+            }
+        });
+        parent.addView(locationTile);
+
         // Rotation Lock
         if (mContext.getResources().getBoolean(R.bool.quick_settings_show_rotation_lock)
                 || DEBUG_GONE_TILES) {
@@ -669,7 +724,7 @@ class QuickSettings {
         });
         parent.addView(alarmTile);
 
-        // Location
+        /*// Location
         final QuickSettingsBasicTile locationTile
                 = new QuickSettingsBasicTile(mContext);
         locationTile.setImageResource(R.drawable.ic_qs_location);
@@ -683,7 +738,7 @@ class QuickSettings {
         mModel.addLocationTile(locationTile,
                 new QuickSettingsModel.BasicRefreshCallback(locationTile)
                         .setShowWhenEnabled(true));
-        parent.addView(locationTile);
+        parent.addView(locationTile);*/
 
         // Wifi Display
         QuickSettingsBasicTile wifiDisplayTile
