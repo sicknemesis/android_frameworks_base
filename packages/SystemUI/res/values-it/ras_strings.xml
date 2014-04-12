@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- Quick Settings -->
+    <!-- Power Menu tile -->
+    <string name="quick_settings_power_menu_label">Menu riavvio</string>
+    <!-- Torch tile -->
+    <string name="quick_settings_torch_label">Torcia</string>
+
+    <!-- Content description of the data connection type HSPA+ for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_data_connection_HP">HSPA+</string>
+</resources>
